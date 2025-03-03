@@ -1,0 +1,33 @@
+services:
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=danslebon
+      - MONGO_INITDB_ROOT_PASSWORD=tuconnaiiiiss
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - e-commerce-network
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    container_name: auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/auth?authSource=admin
+      - JWT_SECRET=efrei_super_pass
+    depends_on:
+      - mongodb
+    networks:
+      - e-commerce-network
+
+networks:
+  e-commerce-network:
+
+volumes:
+  mongodb_data:
