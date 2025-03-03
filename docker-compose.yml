@@ -12,6 +12,19 @@ services:
     networks:
       - e-commerce-network
 
+  product-service:
+    build:
+      context: ./services/product-service
+    container_name: product-service
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/products?authSource=admin
+    depends_on:
+      - mongodb
+    networks:
+      - e-commerce-network
+
   auth-service:
     build:
       context: ./services/auth-service
