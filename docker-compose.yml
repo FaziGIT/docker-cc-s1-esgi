@@ -39,6 +39,20 @@ services:
     networks:
       - e-commerce-network
 
+  order-service:
+    build:
+      context: ./services/order-service
+    container_name: order-service
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/auth?authSource=admin
+      - JWT_SECRET=efrei_super_pass
+    depends_on:
+      - mongodb
+    networks:
+      - e-commerce-network
+
 networks:
   e-commerce-network:
 
