@@ -19,7 +19,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/products?authSource=admin
+      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/ecommercevue?authSource=admin
     depends_on:
       - mongodb
     networks:
@@ -32,7 +32,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/auth?authSource=admin
+      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/ecommercevue?authSource=admin
       - JWT_SECRET=efrei_super_pass
     depends_on:
       - mongodb
@@ -46,10 +46,27 @@ services:
     ports:
       - "3002:3002"
     environment:
-      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/auth?authSource=admin
+      - MONGODB_URI=mongodb://danslebon:tuconnaiiiiss@mongodb:27017/ecommercevue?authSource=admin
       - JWT_SECRET=efrei_super_pass
     depends_on:
       - mongodb
+    networks:
+      - e-commerce-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:8080"
+    environment:
+      - VITE_PRODUCT_SERVICE_URL=http://product-service:3000
+      - VITE_AUTH_SERVICE_URL=http://auth-service:3001
+      - VITE_ORDER_SERVICE_URL=http://order-service:3002
+    depends_on:
+      - product-service
+      - auth-service
+      - order-service
     networks:
       - e-commerce-network
 
